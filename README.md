@@ -1,34 +1,27 @@
-🚨 NetGuard-AI
-AI-Powered Network Intrusion Detection & Prevention System
+NetGuard-AI
+
+Real-Time AI-Powered Cyber Threat Detection & Prevention System
 
 Author: Aryan Yadav
-Category: Cybersecurity • Artificial Intelligence • Deep Learning
 
-📌 Project Summary
+1. Project Overview
 
-NetGuard-AI is a real-time AI-powered cybersecurity system designed to detect, classify, and prevent malicious network activities.
-The system analyzes network traffic data and automatically determines the attack type, severity level, and appropriate prevention action using a deep learning model.
+NetGuard-AI is a real-time AI-driven cybersecurity system designed to detect, classify, and prevent network intrusions using machine learning.
+The system analyzes network traffic data (CICIDS-style CSV features), identifies malicious activity, assesses severity, and provides actionable prevention decisions.
 
-This project is built specifically for hackathons, cybersecurity demos, and AI research showcases.
+This project is built for hackathons and real-world demos, focusing on clarity, reliability, and fast deployment.
 
-🎯 Problem Statement
+2. Key Features
 
-Modern networks generate massive volumes of traffic, making manual threat monitoring ineffective.
-Traditional rule-based systems fail to adapt to evolving attack patterns.
+Real-time network traffic analysis
 
-NetGuard-AI solves this problem by using AI-driven intelligence to automatically detect intrusions and recommend mitigation strategies in real time.
+AI-based attack classification using TabNet (PyTorch)
 
-🧠 Solution Overview
+Supports batch CSV uploads (1 row to thousands)
 
-NetGuard-AI uses a TabNet deep learning model trained on network traffic features to:
+Automatic severity scoring
 
-Detect malicious activity
-
-Classify attack types
-
-Calculate severity using model confidence
-
-Decide prevention action:
+Rule-based prevention decisions:
 
 BLOCK
 
@@ -36,29 +29,15 @@ WARN
 
 MONITOR
 
-Display clear, human-readable prevention guidance
+Human-readable prevention guidance
 
-🚀 Key Features
+Web-based dashboard for easy interaction
 
-AI-based Network Intrusion Detection System (NIDS)
+Docker-based deployment for stability
 
-Batch CSV traffic analysis (CIC-IDS style features)
+3. Supported Attack Types
 
-Deep Learning model (TabNet – PyTorch)
-
-Severity scoring based on prediction confidence
-
-Automatic prevention decision engine
-
-Interactive web dashboard
-
-FastAPI backend
-
-Vercel-ready deployment
-
-🧪 Supported Attack Classes
-
-Benign
+Benign Traffic
 
 DoS Hulk
 
@@ -68,61 +47,28 @@ FTP-Patator
 
 SSH-Patator
 
-Web Attacks (SQL Injection, XSS, Brute Force)
-
 Bot
+
+PortScan
 
 Infiltration
 
+Web Attacks (SQL Injection, XSS, Brute Force)
+
 Heartbleed
 
-🧠 AI / ML Details
-
-Model: TabNetClassifier (PyTorch TabNet)
-
-Input: 77 numeric network traffic features
-
-Output: Attack label + confidence score
-
-Severity Logic: Derived from model probability
-
-Model Artifacts
-
-Stored in the models/ directory:
-
-tabnet_full_model.zip
-
-scaler.pkl
-
-label_encoder.pkl
-
-num_cols.pkl
-
-🏗️ Project Structure
-NetGuard-AI/
-│
-├── api/                # FastAPI backend
-├── web/                # Frontend dashboard (HTML, CSS, JS)
-├── models/             # Trained model artifacts
-│
-├── notebooks/          # Training & experimentation notebooks
-│   └── cyber.ipynb
-│
-├── requirements.txt
-├── vercel.json
-├── .gitignore
-└── README.md
-
-⚙️ Technology Stack
+4. Tech Stack
 Backend
+
+Python 3.10
 
 FastAPI
 
 PyTorch
 
-PyTorch-TabNet
+TabNet (pytorch-tabnet)
 
-Scikit-learn
+Scikit-Learn
 
 Pandas, NumPy
 
@@ -130,88 +76,158 @@ Frontend
 
 HTML
 
-CSS (Custom dark cybersecurity dashboard)
+CSS
 
 Vanilla JavaScript
 
 Deployment
 
-GitHub
+Docker
 
-Vercel (Serverless)
+Railway (recommended for ML workloads)
 
-🔄 System Workflow
+5. Project Structure
+NetGuard-AI/
+│
+├── api/
+│   ├── main.py
+│   ├── core/
+│   │   ├── loader.py
+│   │   ├── predict_engine.py
+│   │   ├── prevention_engine.py
+│   │   └── prevention_rules.py
+│   └── routes/
+│       └── upload.py
+│
+├── models/
+│   ├── tabnet_full_model.zip
+│   ├── scaler.pkl
+│   ├── label_encoder.pkl
+│   └── num_cols.pkl
+│
+├── web/
+│   ├── static/
+│   │   ├── style.css
+│   │   └── script.js
+│   └── templates/
+│       └── home.html
+│
+├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+└── README.md
 
-User uploads a network traffic CSV file
+6. Model Details
 
-Backend preprocesses the data
+Model: TabNetClassifier
 
-AI model predicts attack type and confidence
+Framework: PyTorch
 
-Severity score is calculated
+Input: 77 numerical network traffic features
 
-Prevention decision is generated
+Output: Predicted attack label
 
-Results and mitigation guidance are displayed on the dashboard
+Artifacts:
 
-🖥️ Running the Project Locally
-1️⃣ Create virtual environment
-python -m venv hack1env
-source hack1env/bin/activate
+Trained TabNet model (ZIP)
 
-2️⃣ Install dependencies
+Feature scaler
+
+Label encoder
+
+Feature order list
+
+The model is loaded once at runtime and reused for predictions.
+
+7. API Endpoints
+Home
+GET /
+
+
+Returns the web dashboard.
+
+Health Check
+GET /health
+
+
+Returns service and model load status.
+
+CSV Upload & Prediction
+POST /upload
+
+
+Input: CSV file (no label column required)
+
+Output: JSON containing detected attacks, severity, action, and prevention guide
+
+8. Local Setup (Without Docker)
+python -m venv venv
+source venv/bin/activate
 pip install -r requirements.txt
-
-3️⃣ Start FastAPI server
 uvicorn api.main:app --reload
 
 
-Open in browser:
+Open browser:
 
 http://127.0.0.1:8000
 
-☁️ Deployment Notes (Vercel)
+9. Docker Setup (Recommended)
+Build Image
+docker build -t netguard-ai .
 
-FastAPI runs as a serverless function
+Run Container
+docker run -p 8000:8000 netguard-ai
 
-Frontend is served using Jinja2 templates
 
-Notebooks are included for reference but not executed in production
+Open:
 
-Only trained model artifacts are used during deployment
+http://localhost:8000
 
-📓 Notebooks
+10. Deployment on Railway (Docker)
 
-notebooks/cyber.ipynb includes:
+Push project to GitHub
 
-Data exploration
+Go to https://railway.app
 
-Feature engineering
+New Project → Deploy from GitHub
 
-Model training
+Select repository
 
-Evaluation experiments
+Railway auto-detects Dockerfile
 
-This ensures reproducibility and transparency.
+Deploy
 
-🧩 Use Cases
+This setup avoids serverless limitations and supports heavy ML models.
 
-Hackathon projects
+11. Why Docker + Railway
 
-Cybersecurity demonstrations
+No serverless cold-start issues
 
-Academic AI/ML projects
+Stable PyTorch and TabNet execution
 
-Network intrusion research
+Full control over Python environment
 
-AI-based SOC tools
+Suitable for ML inference workloads
 
-👨‍💻 Author
+Hackathon-friendly and production-ready
+
+12. Use Cases
+
+Cybersecurity monitoring dashboards
+
+Academic and research demonstrations
+
+Hackathon and competition projects
+
+Network security proof-of-concept systems
+
+13. Disclaimer
+
+This project is intended for educational and demonstration purposes.
+It is not a replacement for enterprise-grade intrusion prevention systems.
+
+14. Author
 
 Aryan Yadav
 AI / ML Developer
-Cybersecurity & Deep Learning Enthusiast
-
-🏁 One-Line Hackathon Pitch
-
-NetGuard-AI is an AI-powered network intrusion detection and prevention system that analyzes network traffic to detect cyber attacks and automatically recommend mitigation actions in real time.
+Hackathon Project Submission                                

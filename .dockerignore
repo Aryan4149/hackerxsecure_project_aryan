@@ -1,0 +1,16 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+.git/
+.gitignore
+
+notebooks/
+.env
+
+venv/
+hack1env/
+
+.vercel/
+.vercelignore
