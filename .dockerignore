@@ -12,3 +12,4 @@ hack1env/
 
 .vercel/
 .vercelignore
+*.csv
